@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>마술 백과 앱</title>
+  <style>
+    body { font-family: 'Arial'; margin: 20px; line-height: 1.6; background: #fdfdfd; color: #222; }
+    h1, h2 { color: #b10000; }
+    select, button { padding: 10px; font-size: 16px; margin-top: 10px; }
+    #result { margin-top: 30px; padding: 20px; background: #fff0f0; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+  </style>
+</head>
+<body>
+  <h1>🔮 마술 해법 백과</h1>
+  <p>아래에서 마술 종류를 선택하세요:</p>
+  
+  <select id="magicType">
+    <option value="">-- 마술 선택 --</option>
+    <option value="acaan">퍼펙트 ACAAN (Any Card At Any Number)</option>
+    <option value="window">카드 쓰루 윈도우</option>
+    <option value="force">카드 포스 (원하는 카드 선택 유도)</option>
+    <option value="raiseRise">레이즈 라이즈</option>
+    <option value="blackhole">PH 블랙홀</option>
+    <option value="coinVanish">동전 사라지기</option>
+    <option value="mindRead">심리 마술 (생각 읽기)</option>
+    <option value="control">카드 컨트롤</option>
+    <option value="colorChange">컬러 체인지</option>
+  </select>
+
+  <button onclick="showExplanation()">해법 보기</button>
+
+  <div id="result"></div>
+
+  <script>
+    const explanations = {
+      acaan: `💡 퍼펙트 ACAAN (Any Card At Any Number)<br><br>
+      관객이 말한 카드와 숫자가 정확히 일치하는 위치에서 등장하는 마술입니다.<br>
+      <strong>원리:</strong> 카드 순서를 미리 정해두거나, 숫자에 따라 몰래 카드를 조작합니다.<br>
+      <strong>초보용 방법:</strong> 카드 순서를 외운 스택을 만들고, 숫자에 맞춰 미리 배치.<br>
+      <strong>팁:</strong> 1~52 중 몇 번이라고 먼저 물어본 후, 그에 맞는 카드를 나중에 정해줍니다.`,
+
+      window: `🪟 카드 쓰루 윈도우<br><br>
+      마술사가 던진 카드가 유리창을 뚫고 반대편에 붙어 있는 듯 보이는 마술입니다.<br>
+      <strong>원리:</strong> 동일한 카드 2장을 사용하거나, 미리 유리 밖에 붙여놓습니다.<br>
+      <strong>쉬운 연출:</strong> 관객이 카드를 고르고, 유리 너머에 미리 테이프로 붙여둔 카드를 보여줍니다.`,
+
+      force: `🃏 카드 포스<br><br>
+      관객이 '자유롭게 고른 것처럼 보이지만' 마술사가 유도한 카드를 고르게 합니다.<br>
+      <strong>예:</strong> 클래식 포스, 드리블 포스, 인지적 선택 유도(심리 포스).<br>
+      <strong>쉬운 방법:</strong> 원하는 카드를 앞이나 뒤에 고정하고 섞는 척만 합니다.`,
+
+      raiseRise: `📚 레이즈 라이즈<br><br>
+      관객이 고른 카드가 카드덱 아래에서 점점 위로 올라오는 마술입니다.<br>
+      <strong>원리:</strong> 트리플 리프트, 스윙 컷, 팜 등 다양한 손기술이 조합됩니다.<br>
+      <strong>난이도 높음:</strong> 초보자보단 중급 이상에게 추천됩니다.`,
+
+      blackhole: `🕳️ PH 블랙홀<br><br>
+      카드 한 장이 블랙홀처럼 사라지거나, 다른 세계로 빨려들어가는 듯 연출됩니다.<br>
+      <strong>원리:</strong> 블랙홀 모양 구멍, 가프카드, 자석 등을 활용한 시각적 착시.<br>
+      <strong>팁:</strong> 어두운 배경과 소리 효과를 이용하면 몰입도가 높아집니다.`,
+
+      coinVanish: `🪙 동전 사라지기<br><br>
+      손에 쥔 동전이 사라지고 다시 나타나는 고전 마술입니다.<br>
+      <strong>쉬운 방법:</strong> 프렌치드롭(French Drop): 손에 쥔 척하고 다른 손으로 숨깁니다.<br>
+      <strong>숙련되면:</strong> 리텐션, 숄더 스틸 등으로 진짜처럼 사라지게 보일 수 있습니다.`,
+
+      mindRead: `🧠 심리 마술 (생각 읽기)<br><br>
+      관객이 생각한 단어나 카드를 마술사가 맞추는 연출입니다.<br>
+      <strong>원리:</strong> 제한된 선택지 유도, 언어 패턴, 관객의 반응 관찰.<br>
+      <strong>예:</strong> "지금 카드 한 장을 마음속으로 떠올려보세요…" → 포스 기법과 연계.`,
+
+      control: `🎮 카드 컨트롤<br><br>
+      섞인 덱 속에서 관객의 카드를 원하는 위치로 이동시키는 기술입니다.<br>
+      <strong>방법:</strong> 브레이크, 패스, 컷 컨트롤 등 다양한 방식.<br>
+      <strong>쉬운 기술:</strong> 카드 고른 후 바로 위에 손가락 브레이크 유지 → 컷할 때 위치 조절.`,
+
+      colorChange: `🎨 컬러 체인지<br><br>
+      카드가 눈앞에서 갑자기 다른 카드로 변하는 기술입니다.<br>
+      <strong>예:</strong> 얼티밋 체인지, 에르고 체인지 등.<br>
+      <strong>기초:</strong> 더블리프트 후 한 장만 있는 척하고 바꿔치기.`,
+
+    };
+
+    function showExplanation() {
+      const selected = document.getElementById("magicType").value;
+      const result = document.getElementById("result");
+      if (selected && explanations[selected]) {
+        result.innerHTML = explanations[selected];
+      } else {
+        result.innerHTML = "마술을 선택해주세요.";
+      }
+    }
+  </script>
+</body>
+</html>
